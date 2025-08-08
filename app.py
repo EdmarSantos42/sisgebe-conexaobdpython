@@ -54,7 +54,7 @@ def menu():
         elif opcao == "0":
             break
         else:
-            print("❌ Opção inválida!")
+            print("Opção inválida!")
 
 if __name__ == "__main__":
     menu()

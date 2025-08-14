@@ -15,8 +15,11 @@ def criar_sugestao(titulo, autor, categoria, justificativa, data_sugestao=None, 
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")
 
 def listar_sugestoes():
     try:
@@ -26,5 +29,8 @@ def listar_sugestoes():
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")

@@ -14,8 +14,11 @@ def criar_livro(titulo, autor, isbn=None, sinopse=None, capa=None, quantidade=1,
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")
 
 def author_or_none(a):
     return a if a is not None else ""
@@ -29,8 +32,11 @@ def listar_livros():
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")
 
 def obter_livro(id_livro):
     try:
@@ -44,8 +50,11 @@ def obter_livro(id_livro):
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")
 
 def atualizar_livro(id_livro, titulo, autor, isbn, sinopse, capa, quantidade, categoria_id):
     try:
@@ -62,8 +71,11 @@ def atualizar_livro(id_livro, titulo, autor, isbn, sinopse, capa, quantidade, ca
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")
 
 def deletar_livro(id_livro):
     try:
@@ -77,5 +89,8 @@ def deletar_livro(id_livro):
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")

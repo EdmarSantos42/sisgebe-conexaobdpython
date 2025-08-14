@@ -14,8 +14,11 @@ def criar_relatorio(tipo, periodo_inicio, periodo_fim, gerado_por_bibliotecario=
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")
 
 def listar_relatorios():
     try:
@@ -25,5 +28,8 @@ def listar_relatorios():
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")

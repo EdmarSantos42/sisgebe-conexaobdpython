@@ -4,17 +4,17 @@ from db_config import conectar
 from crud import categoria
 from flask import Flask, request, jsonify
 import crud.categoria as crud_categoria
-import crud.crud_livro as crud_livro
-import crud.crud_aluno as crud_aluno
-import crud.crud_professor as crud_professor
-import crud.crud_bibliotecario as crud_bibliotecario
-import crud.crud_diretor as crud_diretor
-import crud.crud_supervisor as crud_supervisor
-import crud.crud_emprestimo as crud_emprestimo
-import crud.crud_reserva as crud_reserva
-import crud.crud_historicoleitura as crud_historico
-import crud.crud_sugestao as crud_sugestao
-import crud.crud_relatorio as crud_relatorio
+import crud.livro as crud_livro
+import crud.aluno as crud_aluno
+import crud.professor as crud_professor
+import crud.bibliotecario as crud_bibliotecario
+import crud.diretor as crud_diretor
+import crud.supervisor as crud_supervisor
+import crud.emprestimo as crud_emprestimo
+import crud.reserva as crud_reserva
+import crud.historicoleitura as crud_historico
+import crud.sugestao as crud_sugestao
+import crud.relatorio as crud_relatorio
 
 app = Flask(__name__)
 

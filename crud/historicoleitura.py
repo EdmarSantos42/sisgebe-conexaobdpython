@@ -13,8 +13,11 @@ def criar_historico(aluno_id, livro_id, data_inicio=None, data_fim=None):
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")
 
 def listar_historico(aluno_id=None):
     try:
@@ -27,5 +30,8 @@ def listar_historico(aluno_id=None):
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")

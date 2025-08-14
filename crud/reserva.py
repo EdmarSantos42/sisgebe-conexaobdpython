@@ -13,8 +13,11 @@ def criar_reserva(aluno_id, livro_id, data_reserva=None):
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")
 
 def listar_reservas(so_ativas=False):
     try:
@@ -27,8 +30,11 @@ def listar_reservas(so_ativas=False):
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")
 
 def atualizar_reserva(id_reserva, status):
     try:
@@ -40,8 +46,11 @@ def atualizar_reserva(id_reserva, status):
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")
 
 def deletar_reserva(id_reserva):
     try:
@@ -53,5 +62,8 @@ def deletar_reserva(id_reserva):
     except Exception as e:
         return {"status":"erro","mensagem":str(e)}
     finally:
-        try: conn.close()
-        except: pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception as e:
+                print(f"Erro ao fechar conexão: {e}")

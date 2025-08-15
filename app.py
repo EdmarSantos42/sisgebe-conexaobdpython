@@ -3,6 +3,7 @@
 from db_config import conectar
 from crud import categoria
 from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, redirect
 import crud.categoria as crud_categoria
 import crud.livro as crud_livro
 import crud.aluno as crud_aluno
@@ -271,6 +272,30 @@ def criar_relatorio_route():
 @app.route('/relatorios', methods=['GET'])
 def listar_relatorios_route():
     return jsonify(crud_relatorio.listar_relatorios())
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+@app.route("/")
+def dashboard():
+    return render_template("dashboard.html", titulo="Painel Administrativo")
+
+@app.route("/categorias", methods=["GET"])
+def categorias_listar():
+    categorias = categoria.listar_categorias()
+    return render_template("categorias.html", categorias=categorias, titulo="Categorias")
+
+@app.route("/categorias/adicionar", methods=["POST"])
+def categorias_adicionar():
+    nome = request.form["nome"]
+    descricao = request.form["descricao"]
+    categoria.criar_categoria(nome, descricao)
+    return redirect("/categorias")
+
+@app.route("/categorias/deletar/<int:id>", methods=["GET"])
+def categorias_deletar(id):
+    categoria.deletar_categoria(id)
+    return redirect("/categorias")
 
 if __name__ == "__main__":
     app.run(debug=True)

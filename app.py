@@ -2,8 +2,9 @@
 
 from db_config import conectar
 from crud import categoria
-from flask import Flask, request, jsonify
-from flask import Flask, render_template, request, redirect
+from flask import Flask, request, jsonify, render_template, redirect
+
+#Imports CRUD
 import crud.categoria as crud_categoria
 import crud.livro as crud_livro
 import crud.aluno as crud_aluno

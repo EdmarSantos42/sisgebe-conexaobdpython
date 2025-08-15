@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<h1>Sugestões</h1>
+<form method="post" action="/sugestoes/adicionar">
+    <div class="mb-3">
+        <label>Título</label>
+        <input type="text" name="titulo" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Descrição</label>
+        <textarea name="descricao" class="form-control" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+<hr>
+<table class="table table-striped">
+    <thead><tr><th>ID</th><th>Título</th><th>Descrição</th><th>Ações</th></tr></thead>
+    <tbody>
+        {% for s in sugestoes %}
+        <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.titulo }}</td>
+            <td>{{ s.descricao }}</td>
+            <td>
+                <a href="/sugestoes/deletar/{{ s.id }}" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

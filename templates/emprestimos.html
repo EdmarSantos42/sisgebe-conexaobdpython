@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<h1>Empréstimos</h1>
+<form method="post" action="/emprestimos/adicionar">
+    <div class="mb-3">
+        <label>ID do Livro</label>
+        <input type="number" name="id_livro" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>ID do Aluno</label>
+        <input type="number" name="id_aluno" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Data de Empréstimo</label>
+        <input type="date" name="data_emprestimo" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Data de Devolução</label>
+        <input type="date" name="data_devolucao" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Registrar</button>
+</form>
+<hr>
+<table class="table table-striped">
+    <thead><tr><th>ID</th><th>Livro</th><th>Aluno</th><th>Data Empréstimo</th><th>Data Devolução</th><th>Ações</th></tr></thead>
+    <tbody>
+        {% for e in emprestimos %}
+        <tr>
+            <td>{{ e.id }}</td>
+            <td>{{ e.id_livro }}</td>
+            <td>{{ e.id_aluno }}</td>
+            <td>{{ e.data_emprestimo }}</td>
+            <td>{{ e.data_devolucao }}</td>
+            <td>
+                <a href="/emprestimos/deletar/{{ e.id }}" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

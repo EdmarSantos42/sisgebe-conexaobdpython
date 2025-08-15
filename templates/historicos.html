@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<h1>Histórico de Leitura</h1>
+<form method="post" action="/historicos/adicionar">
+    <div class="mb-3">
+        <label>ID do Livro</label>
+        <input type="number" name="id_livro" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>ID do Aluno</label>
+        <input type="number" name="id_aluno" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Data da Leitura</label>
+        <input type="date" name="data_leitura" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Adicionar</button>
+</form>
+<hr>
+<table class="table table-striped">
+    <thead><tr><th>ID</th><th>Livro</th><th>Aluno</th><th>Data Leitura</th><th>Ações</th></tr></thead>
+    <tbody>
+        {% for h in historicos %}
+        <tr>
+            <td>{{ h.id }}</td>
+            <td>{{ h.id_livro }}</td>
+            <td>{{ h.id_aluno }}</td>
+            <td>{{ h.data_leitura }}</td>
+            <td>
+                <a href="/historicos/deletar/{{ h.id }}" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+

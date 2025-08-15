@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<h1>Relatórios</h1>
+<form method="post" action="/relatorios/adicionar">
+    <div class="mb-3">
+        <label>Título</label>
+        <input type="text" name="titulo" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Conteúdo</label>
+        <textarea name="conteudo" class="form-control" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Gerar</button>
+</form>
+<hr>
+<table class="table table-striped">
+    <thead><tr><th>ID</th><th>Título</th><th>Conteúdo</th><th>Ações</th></tr></thead>
+    <tbody>
+        {% for r in relatorios %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.titulo }}</td>
+            <td>{{ r.conteudo }}</td>
+            <td>
+                <a href="/relatorios/deletar/{{ r.id }}" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<h1>Bibliotecários</h1>
+<form method="post" action="/bibliotecarios/adicionar">
+    <div class="mb-3">
+        <label>Nome</label>
+        <input type="text" name="nome" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Adicionar</button>
+</form>
+<hr>
+<table class="table table-striped">
+    <thead><tr><th>ID</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>
+    <tbody>
+        {% for b in bibliotecarios %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.nome }}</td>
+            <td>{{ b.email }}</td>
+            <td>
+                <a href="/bibliotecarios/deletar/{{ b.id }}" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
-{% block conteudo %}
-<h1>Alunos</h1>
+
+{% block content %}
+<h1> Alunos</h1>
 <form method="post" action="/alunos/adicionar">
     <div class="mb-3">
         <label>Nome</label>
@@ -28,4 +29,5 @@
         {% endfor %}
     </tbody>
 </table>
-{% endblock %}
+{% endblock %}
+

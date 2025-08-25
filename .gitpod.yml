@@ -1,17 +1,20 @@
-
 tasks:
-  - command: python app.py
+  - name: Setup MySQL
+    init: |
+      sudo apt-get update
+      sudo apt-get install -y mysql-server mysql-client
+      sudo mkdir -p /workspace/mysql-data /workspace/mysql-logs
+      sudo mysqld_safe --datadir=/workspace/mysql-data \
+                       --log-error=/workspace/mysql-logs/error.log \
+                       --pid-file=/workspace/mysql-logs/mysql.pid \
+                       --skip-grant-tables \
+                       --skip-networking=0 \
+                       --bind-address=0.0.0.0 &
+    command: |
+      echo "MySQL está rodando 🚀"
+      mysql --version
 
-
-
-vscode:
-  extensions:
-    - mtxr.sqltools-driver-sqlites (see https://www.gitpod.io/docs/introduction/learn-gitpod/gitpod-yaml)
-# and commit this file to your remote git repository to share the goodness with others.
-
-# Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
-
-tasks:
-  - command: python app.py
-
+ports:
+  - port: 3306
+    onOpen: ignore
 

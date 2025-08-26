@@ -132,4 +132,3 @@ CREATE TABLE Relatorio (
     FOREIGN KEY (gerado_por_supervisor) REFERENCES Supervisor(id)
 );
 
-select * from aluno;

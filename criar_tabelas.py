@@ -14,5 +14,5 @@ init_app(app)
 
 with app.app_context():
     db.create_all()
-    print("✅ Banco SQLite criado e tabelas geradas com sucesso.")
+    print("Banco SQLite criado e tabelas geradas com sucesso.")
 

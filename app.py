@@ -40,7 +40,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 # Configuração do banco
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "03ea75a2b0d264b0cc7cb8f82b73a766")
-app.config["SQLALCHEMY_DATABASE_URI"] = get_database_uri()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
@@ -65,6 +64,9 @@ def index():
     livros = Livro.query.all()
     return render_template("index.html", livros=livros)
 
+@app.route("/")
+def home():
+    return "Servidor Flask rodando com SQLite 🚀"
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -151,6 +153,4 @@ def emprestar(livro_id):
 
 # --------- EXECUTAR ----------
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()  # cria as tabelas no MySQL se não existirem
     app.run(debug=True)

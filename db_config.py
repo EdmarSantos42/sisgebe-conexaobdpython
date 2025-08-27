@@ -1,13 +1,10 @@
-# db_config.py
-
 import os
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 
-
-# Caminho do banco SQLite (arquivo dentro do projeto)
+# Caminho absoluto do arquivo do banco
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DB_PATH = os.path.join(BASE_DIR, "database.sqlite")
+DB_PATH = os.path.join(BASE_DIR, "sgb.db")
 
 db = SQLAlchemy()
 

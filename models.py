@@ -1,145 +1,110 @@
-# models.py
-from flask_sqlalchemy import SQLAlchemy
+from db_config import db
 from flask_login import UserMixin
-import enum
+from datetime import datetime
 
-db = SQLAlchemy()
+# ----------------- USUÁRIOS -----------------
 
-# ---------- ENUMS ----------
-class StatusAluno(enum.Enum):
-    ativo = "ativo"
-    bloqueado = "bloqueado"
-
-class StatusGeral(enum.Enum):
-    ativo = "ativo"
-    inativo = "inativo"
-
-class StatusReserva(enum.Enum):
-    ativa = "ativa"
-    expirada = "expirada"
-    cancelada = "cancelada"
-
-class TipoRelatorio(enum.Enum):
-    mensal = "mensal"
-    turma = "turma"
-    aluno = "aluno"
-    livros = "livros"
-
-# ---------- MODELS ----------
-class Categoria(db.Model):
-    __tablename__ = "categoria"
+class Aluno(UserMixin, db.Model):
+    __tablename__ = "alunos"
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(50), nullable=False)
-    descricao = db.Column(db.Text)
+    nome = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    senha = db.Column(db.String(200), nullable=False)
+    serie = db.Column(db.String(50))
+
+    emprestimos = db.relationship("Emprestimo", backref="aluno", lazy=True)
+    reservas = db.relationship("Reserva", backref="aluno", lazy=True)
+    historico = db.relationship("HistoricoLeitura", backref="aluno", lazy=True)
+
+class Professor(UserMixin, db.Model):
+    __tablename__ = "professores"
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    senha = db.Column(db.String(200), nullable=False)
+
+class Bibliotecario(UserMixin, db.Model):
+    __tablename__ = "bibliotecarios"
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    senha = db.Column(db.String(200), nullable=False)
+
+class Diretor(UserMixin, db.Model):
+    __tablename__ = "diretores"
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    senha = db.Column(db.String(200), nullable=False)
+
+class Supervisor(UserMixin, db.Model):
+    __tablename__ = "supervisores"
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    senha = db.Column(db.String(200), nullable=False)
+
+# ----------------- LIVROS -----------------
+
+class Categoria(db.Model):
+    __tablename__ = "categorias"
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), unique=True, nullable=False)
+
     livros = db.relationship("Livro", backref="categoria", lazy=True)
 
 class Livro(db.Model):
-    __tablename__ = "livro"
+    __tablename__ = "livros"
     id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String(150), nullable=False)
-    autor = db.Column(db.String(100), nullable=False)
-    isbn = db.Column(db.String(20), unique=True)
-    sinopse = db.Column(db.Text)
-    capa = db.Column(db.Text)
-    quantidade = db.Column(db.Integer, default=1)
-    categoria_id = db.Column(db.Integer, db.ForeignKey("categoria.id"))
+    titulo = db.Column(db.String(200), nullable=False)
+    autor = db.Column(db.String(120), nullable=False)
+    quantidade = db.Column(db.Integer, nullable=False, default=1)
+    categoria_id = db.Column(db.Integer, db.ForeignKey("categorias.id"), nullable=True)
+
     emprestimos = db.relationship("Emprestimo", backref="livro", lazy=True)
     reservas = db.relationship("Reserva", backref="livro", lazy=True)
-    historicos = db.relationship("HistoricoLeitura", backref="livro", lazy=True)
+    historico = db.relationship("HistoricoLeitura", backref="livro", lazy=True)
 
-class Aluno(UserMixin, db.Model):
-    __tablename__ = "aluno"
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    senha = db.Column(db.String(255), nullable=False)
-    serie = db.Column(db.String(20), nullable=False)
-    status = db.Column(db.Enum(StatusAluno), default=StatusAluno.ativo)
-    emprestimos = db.relationship("Emprestimo", backref="aluno", lazy=True)
-    reservas = db.relationship("Reserva", backref="aluno", lazy=True)
-    historicos = db.relationship("HistoricoLeitura", backref="aluno", lazy=True)
-    sugestoes = db.relationship("Sugestao", backref="aluno", lazy=True)
-
-class Professor(UserMixin, db.Model):
-    __tablename__ = "professor"
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    senha = db.Column(db.String(255), nullable=False)
-    disciplina = db.Column(db.String(50))
-    status = db.Column(db.Enum(StatusGeral), default=StatusGeral.ativo)
-    sugestoes = db.relationship("Sugestao", backref="professor", lazy=True)
-
-class Bibliotecario(UserMixin, db.Model):
-    __tablename__ = "bibliotecario"
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    senha = db.Column(db.String(255), nullable=False)
-    status = db.Column(db.Enum(StatusGeral), default=StatusGeral.ativo)
-    relatorios = db.relationship("Relatorio", backref="bibliotecario", lazy=True)
-
-class Diretor(UserMixin, db.Model):
-    __tablename__ = "diretor"
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    senha = db.Column(db.String(255), nullable=False)
-    status = db.Column(db.Enum(StatusGeral), default=StatusGeral.ativo)
-    relatorios = db.relationship("Relatorio", backref="diretor", lazy=True)
-
-class Supervisor(UserMixin, db.Model):
-    __tablename__ = "supervisor"
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    senha = db.Column(db.String(255), nullable=False)
-    status = db.Column(db.Enum(StatusGeral), default=StatusGeral.ativo)
-    relatorios = db.relationship("Relatorio", backref="supervisor", lazy=True)
+# ----------------- EMPRÉSTIMOS E RESERVAS -----------------
 
 class Emprestimo(db.Model):
-    __tablename__ = "emprestimo"
+    __tablename__ = "emprestimos"
     id = db.Column(db.Integer, primary_key=True)
-    aluno_id = db.Column(db.Integer, db.ForeignKey("aluno.id"))
-    livro_id = db.Column(db.Integer, db.ForeignKey("livro.id"))
-    data_emprestimo = db.Column(db.Date, nullable=False)
+    aluno_id = db.Column(db.Integer, db.ForeignKey("alunos.id"), nullable=False)
+    livro_id = db.Column(db.Integer, db.ForeignKey("livros.id"), nullable=False)
+    data_emprestimo = db.Column(db.Date, default=datetime.utcnow)
     data_devolucao_prevista = db.Column(db.Date)
-    data_devolucao_real = db.Column(db.Date)
-    multa = db.Column(db.Numeric(6, 2), default=0.00)
+    data_devolucao_real = db.Column(db.Date, nullable=True)
 
 class Reserva(db.Model):
-    __tablename__ = "reserva"
+    __tablename__ = "reservas"
     id = db.Column(db.Integer, primary_key=True)
-    aluno_id = db.Column(db.Integer, db.ForeignKey("aluno.id"))
-    livro_id = db.Column(db.Integer, db.ForeignKey("livro.id"))
-    data_reserva = db.Column(db.Date)
-    status = db.Column(db.Enum(StatusReserva))
+    aluno_id = db.Column(db.Integer, db.ForeignKey("alunos.id"), nullable=False)
+    livro_id = db.Column(db.Integer, db.ForeignKey("livros.id"), nullable=False)
+    data_reserva = db.Column(db.DateTime, default=datetime.utcnow)
+
+# ----------------- HISTÓRICO -----------------
 
 class HistoricoLeitura(db.Model):
-    __tablename__ = "historico_leitura"
+    __tablename__ = "historicos"
     id = db.Column(db.Integer, primary_key=True)
-    aluno_id = db.Column(db.Integer, db.ForeignKey("aluno.id"))
-    livro_id = db.Column(db.Integer, db.ForeignKey("livro.id"))
-    data_inicio = db.Column(db.Date)
-    data_fim = db.Column(db.Date)
+    aluno_id = db.Column(db.Integer, db.ForeignKey("alunos.id"), nullable=False)
+    livro_id = db.Column(db.Integer, db.ForeignKey("livros.id"), nullable=False)
+    data_leitura = db.Column(db.DateTime, default=datetime.utcnow)
+
+# ----------------- OUTROS -----------------
 
 class Sugestao(db.Model):
-    __tablename__ = "sugestao"
+    __tablename__ = "sugestoes"
     id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String(150))
-    autor = db.Column(db.String(100))
-    categoria = db.Column(db.String(50))
-    justificativa = db.Column(db.Text)
-    data_sugestao = db.Column(db.Date)
-    aluno_id = db.Column(db.Integer, db.ForeignKey("aluno.id"))
-    professor_id = db.Column(db.Integer, db.ForeignKey("professor.id"))
+    aluno_id = db.Column(db.Integer, db.ForeignKey("alunos.id"), nullable=False)
+    titulo = db.Column(db.String(200), nullable=False)
+    autor = db.Column(db.String(120), nullable=False)
+    data_sugestao = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Relatorio(db.Model):
-    __tablename__ = "relatorio"
+    __tablename__ = "relatorios"
     id = db.Column(db.Integer, primary_key=True)
-    tipo = db.Column(db.Enum(TipoRelatorio))
-    periodo_inicio = db.Column(db.Date)
-    periodo_fim = db.Column(db.Date)
-    gerado_por_bibliotecario = db.Column(db.Integer, db.ForeignKey("bibliotecario.id"))
-    gerado_por_diretor = db.Column(db.Integer, db.ForeignKey("diretor.id"))
-    gerado_por_supervisor = db.Column(db.Integer, db.ForeignKey("supervisor.id"))
+    bibliotecario_id = db.Column(db.Integer, db.ForeignKey("bibliotecarios.id"))
+    conteudo = db.Column(db.Text, nullable=False)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
